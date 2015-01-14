@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="JobScheduler.CloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+  <Role name="CloudHost">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="yoda" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEHeF56QYAyeiS3bfO0ylGPEwDQYJKoZIhvcNAQEBBQAEggEAfySqboU39K/hRSZ3ip8jc2CtLBBYx+XKoXUdCZQxe1CU8ClGbBizjC2W6+TMRBEKdJN/Ww6OTCt5m5NrVozykkgZiXtYComZY4ePAZCZcEy0Z313WzFzp8tmmLxZIEOHPGqtkUi1PbPaUNVHUBJI2zYUaGUR3cGhe/5g6cEkjifRPl6OyttGCf8hYiZ58tsMxMxa/gPAcmf2CARznaF2j1eaKTKMoyUyTSx/ERIFVK0sapmmPFWCCMXukmRT998OFX1DM4vGJ4oEenMdHX5HGJblVxy4A4ZSnnYvDRmcq+UkZ6lWu0nnk+3qyM/HiOVuzzMNiAkyddMBb0huVSqaCDAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECEdVpw/wIPSLgBBg/Psve9HpLvaRS2oQnG88" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2016-01-14T23:59:59.0000000-05:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="6B25EB3D1CC76615242FEEB1EE3812EE512E89A5" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
