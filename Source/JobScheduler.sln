@@ -21,6 +21,10 @@ Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "JobScheduler.CloudService",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudHost", "CloudHost\CloudHost.csproj", "{0BB75242-E311-4CEC-9072-D6256CC8775E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobScheduler.Web", "JobScheduler.Web\JobScheduler.Web.csproj", "{B9863138-751C-47B9-B32C-6887FC62CECF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobScheduler.Contracts", "JobScheduler.Contracts\JobScheduler.Contracts.csproj", "{0E62CC19-83FA-4A63-9A9E-D4E9D3974D3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,14 @@ Global
 		{0BB75242-E311-4CEC-9072-D6256CC8775E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BB75242-E311-4CEC-9072-D6256CC8775E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB75242-E311-4CEC-9072-D6256CC8775E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9863138-751C-47B9-B32C-6887FC62CECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9863138-751C-47B9-B32C-6887FC62CECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9863138-751C-47B9-B32C-6887FC62CECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9863138-751C-47B9-B32C-6887FC62CECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E62CC19-83FA-4A63-9A9E-D4E9D3974D3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E62CC19-83FA-4A63-9A9E-D4E9D3974D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E62CC19-83FA-4A63-9A9E-D4E9D3974D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E62CC19-83FA-4A63-9A9E-D4E9D3974D3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,6 +27,7 @@ namespace JobScheduler.Service
                             s.ConstructUsing(name =>
                                              {
                                                  var t = Bootstrapper.Initialize();
+                                                 Bootstrapper.StartRestService();
                                                  t.Initialize();
                                                  return t;
                                              });

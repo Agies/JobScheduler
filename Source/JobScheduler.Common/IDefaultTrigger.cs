@@ -2,7 +2,7 @@
 
 namespace JobScheduler.Common
 {
-    public interface IDefaultTrigger: ITrigger
+    public interface IDefaultTrigger: ISimpleTrigger
     {
     }
 }

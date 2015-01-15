@@ -5,5 +5,8 @@
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
     </Imports>
+    <Endpoints>
+      <InputEndpoint name="httpIn" protocol="http" port="8080" />
+    </Endpoints>
   </WorkerRole>
 </ServiceDefinition>
