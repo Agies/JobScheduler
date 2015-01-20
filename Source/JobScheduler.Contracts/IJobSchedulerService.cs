@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using System.Runtime.Serialization;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
@@ -17,7 +15,23 @@ namespace JobScheduler.Contracts
 
         [OperationContract]
         [WebGet]
-        SchedulerModel Get();
+        SchedulerModel GetScheduler();
+        
+        [OperationContract]
+        [WebGet]
+        JobDetailModel GetJob(string name, string group);
+
+        [OperationContract]
+        [WebGet]
+        MessageBase Stop();
+
+        [OperationContract]
+        [WebGet]
+        MessageBase Start();
+    }
+
+    public class MessageBase
+    {
     }
 
     [DataContract]
@@ -60,10 +74,21 @@ namespace JobScheduler.Contracts
         public bool PersistJobDataAfterExecution { get; set; }
         [DataMember]
         public bool RequestsRecovery { get; set; }
+        [DataMember]
+        public bool Running { get; set; }
+        [DataMember]
+        public bool Recovering { get; set; }
+        [DataMember]
+        public string InstanceId { get; set; }
+        [DataMember]
+        public DateTimeOffset? FireTime { get; set; }
     }
 
     [DataContract]
     [KnownType(typeof(SimpleTriggerModel))]
+    [KnownType(typeof(DailyTimeIntervalTriggerModel))]
+    [KnownType(typeof(CalendarIntervalTriggerModel))]
+    [KnownType(typeof(CronTriggerModel))]
     public class TriggerModel
     {
         [DataMember]
@@ -86,43 +111,41 @@ namespace JobScheduler.Contracts
         public DateTimeOffset? NextFireTimeUtc { get; set; }
         [DataMember]
         public DateTimeOffset? PreviousFireTimeUtc { get; set; }
+        [DataMember]
+        public int RepeatCount { get; set; }
+        [DataMember]
+        public int TimesTriggered { get; set; }
+        [DataMember]
+        public bool Complete { get; set; }
     }
 
     [DataContract]
     public class SimpleTriggerModel : TriggerModel
     {
         [DataMember]
-        public int RepeatCount { get; set; }
-        [DataMember]
         public TimeSpan RepeatInterval { get; set; }
-        [DataMember]
-        public int TimesTriggered { get; set; }
-        [DataMember]
-        public bool Complete { get; set; }
     }
 
     [DataContract]
     public class CronTriggerModel : TriggerModel
     {
+        [DataMember] 
+        public string CronExpressionString { get; set; }
         [DataMember]
-        public int RepeatCount { get; set; }
-        [DataMember]
-        public int TimesTriggered { get; set; }
-        [DataMember]
-        public bool Complete { get; set; }
+        public string ExpressionSummary { get; set; }
+    }
+
+    [DataContract]
+    public class CalendarIntervalTriggerModel : TriggerModel
+    {
+
     }
     
     [DataContract]
     public class DailyTimeIntervalTriggerModel : TriggerModel
     {
         [DataMember]
-        public int RepeatCount { get; set; }
-        [DataMember]
         public int RepeatInterval { get; set; }
-        [DataMember]
-        public int TimesTriggered { get; set; }
-        [DataMember]
-        public bool Complete { get; set; }
         [DataMember]
         public List<DayOfWeek> DaysOfWeek { get; set; }
         [DataMember]

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using AutoMapper;
@@ -12,7 +11,7 @@ namespace JobScheduler
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class JobSchedulerService : IJobSchedulerService
     {
-        private IScheduler _scheduler;
+        private readonly IScheduler _scheduler;
         private readonly IMappingEngine _engine;
 
         public JobSchedulerService(IScheduler scheduler, IMappingEngine engine)
@@ -26,28 +25,74 @@ namespace JobScheduler
             return "pong";
         }
 
-        public SchedulerModel Get()
+        public SchedulerModel GetScheduler()
         {
             var model = new SchedulerModel();
             model.Id = _scheduler.SchedulerInstanceId;
             model.Name = _scheduler.SchedulerName;
-            foreach (var jobDetail in GetJobs())
+            foreach (var jobDetail in GetJobs(GroupMatcher<JobKey>.AnyGroup()))
             {
-                var jobModel = _engine.Map<JobDetailModel>(jobDetail);
-                model.JobDetails.Add(jobModel);
-                foreach (var trigger in _scheduler.GetTriggersOfJob(jobDetail.Key))
-                {
-                    var triggerModel = _engine.Map<TriggerModel>(trigger);
-                    jobModel.Triggers.Add(triggerModel);
-                }
+                model.JobDetails.Add(jobDetail);
             }
             return model;
         }
 
-        private IEnumerable<IJobDetail> GetJobs()
+        public JobDetailModel GetJob(string name, string group)
         {
-            var jobsNames = _scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
-            return jobsNames.Select(jobsName => _scheduler.GetJobDetail(jobsName));
+            var jobDetail = GetJobModel(name, group);
+            return jobDetail;
+        }
+
+        public MessageBase Stop()
+        {
+            _scheduler.PauseAll();
+            return new MessageBase();
+        }
+
+        public MessageBase Shutdown()
+        {
+            _scheduler.Shutdown();
+            return new MessageBase();
+        }
+
+        public MessageBase Start()
+        {
+            _scheduler.Start();
+            return new MessageBase();
+        }
+
+        private JobDetailModel CreateJobDetail(IJobDetail jobDetail)
+        {
+            if (jobDetail == null) return null;
+            var jobModel = _engine.Map<JobDetailModel>(jobDetail);
+            var running = _scheduler.GetCurrentlyExecutingJobs();
+            foreach (var context in running)
+            {
+                if (context.JobDetail.Equals(jobDetail))
+                {
+                    jobModel.Running = true;
+                    jobModel.Recovering = true;
+                    jobModel.InstanceId = context.FireInstanceId;
+                    jobModel.FireTime = context.FireTimeUtc;
+                }
+            }
+            foreach (var trigger in _scheduler.GetTriggersOfJob(jobDetail.Key))
+            {
+                var triggerModel = _engine.Map<TriggerModel>(trigger);
+                jobModel.Triggers.Add(triggerModel);
+            }
+            return jobModel;
+        }
+
+        private JobDetailModel GetJobModel(string name, string group)
+        {
+            return CreateJobDetail(_scheduler.GetJobDetail(new JobKey(name ?? "Default", group ?? "Default")));
+        }
+
+        private IEnumerable<JobDetailModel> GetJobs(GroupMatcher<JobKey> match)
+        {
+            var jobsNames = _scheduler.GetJobKeys(match);
+            return jobsNames.Select(jobsName => CreateJobDetail(_scheduler.GetJobDetail(jobsName)));
         }
     }
 }

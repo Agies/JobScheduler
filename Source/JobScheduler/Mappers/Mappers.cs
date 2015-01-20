@@ -46,6 +46,8 @@ namespace JobScheduler.Mappers
 
         public void CreateMap(IConfiguration expression)
         {
+            expression.CreateMap<CronTriggerImpl, CronTriggerModel>()
+                .ForMember(model => model.ExpressionSummary, ex => ex.MapFrom(impl => impl.GetExpressionSummary()));
             expression.CreateMap<SimpleTriggerImpl, SimpleTriggerModel>()
                 .Include<DefaultTrigger, SimpleTriggerModel>()
                 ;  
@@ -53,6 +55,8 @@ namespace JobScheduler.Mappers
                 .Include<DefaultTrigger, SimpleTriggerModel>()
                 .Include<SimpleTriggerImpl, SimpleTriggerModel>()
                 .Include<DailyTimeIntervalTriggerImpl, DailyTimeIntervalTriggerModel>()
+                .Include<CalendarIntervalTriggerImpl, CalendarIntervalTriggerModel>()
+                .Include<CronTriggerImpl, CronTriggerModel>()
                 .ForMember(t => t.NextFireTimeUtc, e => e.MapFrom(d => d.GetNextFireTimeUtc()))
                 .ForMember(t => t.PreviousFireTimeUtc, e => e.MapFrom(d => d.GetPreviousFireTimeUtc()))
                 ;                
